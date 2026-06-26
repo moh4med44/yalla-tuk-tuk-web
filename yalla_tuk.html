@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حمّل تطبيق يلا توك توك</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            color: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .app-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 25px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            border: 3px solid #fff;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #1a4d2e;
+        }
+
+        .version {
+            background: #28a745;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        p.desc {
+            font-size: 1.05rem;
+            color: #2b2b2b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            background: #1a4d2e;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(26, 77, 46, 0.3);
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .download-btn:hover {
+            background: #0e3b1f;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(26, 77, 46, 0.5);
+        }
+
+        /* صف الأزرار جنب بعض - حجم مصغر */
+        .button-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .platform-link {
+            background: rgba(26, 77, 46, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;          /* تصغير padding */
+            border-radius: 15px;
+            text-decoration: none;
+            color: #1a4d2e;
+            font-weight: 600;
+            font-size: 0.9rem;         /* تصغير حجم الخط */
+            transition: 0.3s;
+            border: 1px solid #1a4d2e33;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .platform-link.empty {
+            cursor: default;
+            user-select: none;
+        }
+
+        .platform-link:hover {
+            background: rgba(26, 77, 46, 0.25);
+            color: #0e3b1f;
+        }
+
+        /* زر الشروط والأحكام */
+        .legal-btn {
+            background: transparent;
+            border: 2px dashed #1a4d2e;
+            color: #1a4d2e;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+
+        .legal-btn:hover {
+            background: rgba(26, 77, 46, 0.1);
+            border-style: solid;
+        }
+
+        /* المودال (النافذة المنبثقة) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            color: #1a1a2e;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: right;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a4d2e;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal h2 {
+            color: #1a4d2e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #2b2b2b;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- أيقونة التطبيق -->
+        <img src="https://raw.githubusercontent.com/moh4med44/yalla-tuk-tuk/main/WhatsApp%20Image%202026-06-26%20at%206.49.06%20PM.jpeg" alt="أيقونة يلا توك توك" class="app-icon">
+
+        <h1>تطبيق يلا توك توك</h1>
+        <span class="version">الإصدار 1.0.0</span>
+
+        <p class="desc">
+            حمل أحدث نسخة من تطبيق يلا توك توك الآن. توصيل سريع وآمن.
+        </p>
+
+        <!-- رابط التحميل المباشر الرئيسي -->
+        <a href="https://raw.githubusercontent.com/moh4med44/yalla-tuk-tuk/main/app-release.apk" class="download-btn">
+            ⬇️ تحميل للأندرويد
+        </a>
+
+        <!-- صف الأزرار جنب بعض (حجم أصغر) -->
+        <div class="button-row">
+            <!-- زر فاضي (تحميل تطبيق يلا توك توك كابتن) -->
+            <span class="platform-link empty">
+                📱 تحميل تطبيق يلا توك توك كابتن
+            </span>
+
+            <!-- رابط صفحة الفيسبوك -->
+            <a href="https://www.facebook.com/share/193EWqMv5X/" class="platform-link" target="_blank">
+                📘 صفحة الفيسبوك الرسمية
+            </a>
+        </div>
+
+        <!-- زر الشروط والأحكام -->
+        <button class="legal-btn" onclick="openModal()">
+            ⚖️ الشروط والأحكام وسياسة الخصوصية
+        </button>
+
+        <p class="footer-note">
+            للدعم والاقتراحات تواصل معي عبر صفحة الفيسبوك أو البريد الإلكتروني.
+        </p>
+    </div>
+
+    <!-- النافذة المنبثقة (المودال) -->
+    <div class="modal" id="legalModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            
+            <h2>الشروط والأحكام</h2>
+            
+            <p><strong>التطبيق وسيط فقط:</strong> التطبيق منصة رقمية لربط العميل بالسائق، وليس شركة نقل ولا يمتلك مركبات.</p>
+            
+            <p><strong>إخلاء المسؤولية:</strong> العميل والسائق مسؤولان بالكامل عن الرحلة، ولا يتحمل التطبيق أي مسؤولية عن الحوادث، المشاكل، أو المفقودات.</p>
+            
+            <p><strong>البيانات والحساب:</strong> يلتزم العميل بتسجيل بيانات صحيحة (الاسم ورقم الهاتف)، وهو المسؤول عن أي نشاط يتم من خلال حسابه.</p>
+            
+            <p><strong>الدفع والأجرة:</strong> يلتزم العميل بدفع الأجرة المتفق عليها للسائق نقداً (كاش) فور انتهاء الرحلة.</p>
+            
+            <p><strong>سياسة إلغاء الرحلة:</strong> تكرار إلغاء الرحلات بدون سبب بعد قبول السائق يعرض حساب العميل للقيود المؤقتة.</p>
+            
+            <p><strong>الحظر وسوء السلوك:</strong> يحق للتطبيق حظر حساب العميل نهائياً في حال الإساءة للسائق أو مخالفة الآداب العامة.</p>
+            
+            <h2>سياسة الخصوصية</h2>
+            
+            <p><strong>الخصوصية:</strong> تُستخدم بيانات العميل (الاسم، الهاتف، والموقع) لغرض توصيله بالسائق فقط، ولا يتم مشاركتها مع أي جهة أخرى.</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('legalModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('legalModal').style.display = 'none';
+        }
+        // إغلاق المودال عند النقر خارج المحتوى
+        window.onclick = function(event) {
+            var modal = document.getElementById('legalModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
